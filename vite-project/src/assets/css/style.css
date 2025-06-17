@@ -1,0 +1,15 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  width: 400px;
+  max-width: 50%;
+  margin: 1rem auto;
+}
+
+.error {
+  color: red;
+}
+
+.registration-link {
+  text-align: center;
+}

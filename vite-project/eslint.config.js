@@ -23,6 +23,14 @@ export default defineConfig([
   {
     rules: {
       "no-unused-vars": "warn",
+      "react/react-in-tsx-scope": "off",
+      "react/tsx-filename-extension": [1, { extensions: [".ts", ".tsx"] }],
+      "prettier/prettier": [
+        "error",
+        {
+          endOfLine: "auto",
+        },
+      ],
     },
   },
   {
