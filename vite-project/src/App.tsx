@@ -1,16 +1,10 @@
-import Sign_in from "./pages/Sign_in";
-import Sign_up from "./pages/Sign_up";
-import Dashboard from "./pages/Dashboard";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router } from "react-router-dom";
+import AppRoutes from "./routes/AppRoutes";
 
 function App() {
   return (
     <Router>
-      <Routes>
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/" element={<Sign_in />} />
-        <Route path="/sign_up" element={<Sign_up />} />
-      </Routes>
+      <AppRoutes />
     </Router>
   );
 }

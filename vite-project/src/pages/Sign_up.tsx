@@ -1,7 +1,7 @@
-import "../assets/css/style.css";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Link } from "react-router";
 
 const schema = z
   .object({
@@ -40,25 +40,80 @@ function Sign_up() {
   };
 
   return (
-    <div className="Sign_up">
-      <form className="form" onSubmit={handleSubmit(submitData)}>
-        <label> Логин: </label>
-        <input type="text" {...register("login")} />
-        <p className="error">{errors.login?.message}</p>
+    <div className="min-h-screen flex items-center justify-center bg-sidebar">
+      <form
+        onSubmit={handleSubmit(submitData)}
+        className="font-rubik font-normal bg-white p-8 rounded-2xl shadow-lg w-full max-w-md space-y-4"
+      >
+        <h2 className="text-2xl font-bold mb-4 text-center">Регистрация</h2>
 
-        <label> Email: </label>
-        <input type="email" {...register("email")} />
-        <p className="error">{errors.email?.message}</p>
+        <div>
+          <label className="block text-black font-medium">Логин</label>
+          <input
+            type="text"
+            {...register("login")}
+            className="w-full mt-2 p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+          />
+          {errors.login && (
+            <p className="text-red-500 text-sm mt-2">{errors.login.message}</p>
+          )}
+        </div>
 
-        <label> Пароль: </label>
-        <input type="password" {...register("password")} />
-        <p className="error">{errors.password?.message}</p>
+        <div>
+          <label className="block text-black font-medium">Email</label>
+          <input
+            type="email"
+            {...register("email")}
+            className="w-full mt-2 p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+          />
+          {errors.email && (
+            <p className="text-red-500 text-sm mt-2">{errors.email.message}</p>
+          )}
+        </div>
 
-        <label> Подтвердить пароль: </label>
-        <input type="password" {...register("confirmPassword")} />
-        <p className="error">{errors.confirmPassword?.message}</p>
+        <div>
+          <label className="block text-black font-medium">Пароль</label>
+          <input
+            type="password"
+            {...register("password")}
+            className="w-full mt-2 p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+          />
+          {errors.password && (
+            <p className="text-red-500 text-sm mt-2">
+              {errors.password.message}
+            </p>
+          )}
+        </div>
 
-        <input type="submit" />
+        <div>
+          <label className="block text-black font-medium">
+            Подтвердить пароль
+          </label>
+          <input
+            type="password"
+            {...register("confirmPassword")}
+            className="w-full mt-2 p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+          />
+          {errors.confirmPassword && (
+            <p className="text-red-500 text-sm mt-2">
+              {errors.confirmPassword.message}
+            </p>
+          )}
+        </div>
+
+        <button
+          type="submit"
+          className="w-full mt-1 bg-fusion text-white cursor-pointer py-2 rounded-md hover:bg-fusion-dark transition "
+        >
+          Зарегистрироваться
+        </button>
+
+        <p className="text-center">
+          Уже есть аккаунт?{" "}
+          <Link to="/" className="text-fusion hover:text-fusion-dark">
+            Войти
+          </Link>
+        </p>
       </form>
     </div>
   );

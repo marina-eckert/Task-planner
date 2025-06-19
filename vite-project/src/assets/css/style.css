@@ -1,4 +1,4 @@
-.form {
+/*.form {
   display: flex;
   flex-direction: column;
   width: 400px;
@@ -13,3 +13,8 @@
 .registration-link {
   text-align: center;
 }
+
+.submit:hover {
+  cursor: pointer;
+}
+*/
