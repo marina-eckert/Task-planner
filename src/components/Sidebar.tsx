@@ -1,6 +1,7 @@
 import { NavLink } from "react-router-dom";
 import logo from "../assets/images/icon.svg";
 
+// TODO: Добавить типизацию компонента - const Sidebar: React.FC = () => {
 const Sidebar = () => {
   return (
     <aside className="w-[20%] bg-sidebar min-h-screen flex flex-col font-rubik font-medium text-black">

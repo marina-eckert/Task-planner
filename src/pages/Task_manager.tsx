@@ -1,6 +1,8 @@
 import MainLayout from "../layouts/MainLayout";
 
+// TODO: Добавить типизацию компонента - const Task_Manager: React.FC = () => {
 const Task_Manager = () => {
+  // TODO: Вынести TaskCard в отдельный компонент src/components/TaskCard.tsx
   const TaskCard = ({
     title,
     participant,

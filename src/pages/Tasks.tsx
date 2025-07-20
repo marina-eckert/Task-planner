@@ -2,6 +2,7 @@ import MainLayout from "../layouts/MainLayout";
 import HistoryCard from "../components/HistoryCard";
 import avatar from "../assets/images/arthur.svg";
 
+// TODO: Добавить типизацию компонента - const Tasks: React.FC = () => {
 const Tasks = () => {
   return (
     <MainLayout>
@@ -55,6 +56,8 @@ const Tasks = () => {
               className="bg-project w-full rounded-xl p-3 text-sm mb-2 resize-none focus:outline-none h-28"
               placeholder="Комментарий..."
               rows={3}
+              // TODO: Добавить типизированный обработчик событий
+              // onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => {...}}
             ></textarea>
 
             <button className="bg-btn-orange text-white rounded-xl px-4 py-2 text-sm font-medium float-right cursor-pointer transition-colors duration-300 ease-in-out hover:brightness-110">

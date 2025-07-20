@@ -34,6 +34,12 @@ function Sign_in() {
         }),
       });
 
+      // TODO: Добавить типизацию для API ответов
+      // interface LoginResponse {
+      //   token: string;
+      //   userId: string;
+      //   message?: string;
+      // }
       const result = await response.json();
 
       if (!response.ok) {

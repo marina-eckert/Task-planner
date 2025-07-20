@@ -1,5 +1,12 @@
 import { Users, Calendar, Upload } from "lucide-react";
 
+// TODO: Создать интерфейс Project в src/types/index.ts
+// interface Project {
+//   title: string;
+//   dateStart: string;
+//   dateEnd: string;
+//   team: string;
+// }
 const projects = [
   {
     title: "OcOO “Energi.kg”",
@@ -33,6 +40,7 @@ const projects = [
   },
 ];
 
+// TODO: Добавить типизацию компонента - const Card: React.FC = () => {
 const Card = () => {
   return (
     <div className="bg-card p-6 rounded-xl max-w-8xl mt-6 font-rubik font-normal">

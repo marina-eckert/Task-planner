@@ -1,6 +1,7 @@
 import MainLayout from "../layouts/MainLayout";
 import Card from "../components/Card";
 
+// TODO: Добавить типизацию компонента - const Dashboard: React.FC = () => {
 function Dashboard() {
   return (
     <MainLayout>
