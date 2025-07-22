@@ -1,44 +1,30 @@
 import MainLayout from "../layouts/MainLayout";
+import TaskCard from "../components/TaskCard";
+import { useTranslation } from "react-i18next";
+import { Link } from "react-router-dom";
 
-// TODO: Добавить типизацию компонента - const Task_Manager: React.FC = () => {
-const Task_Manager = () => {
-  // TODO: Вынести TaskCard в отдельный компонент src/components/TaskCard.tsx
-  const TaskCard = ({
-    title,
-    participant,
-    date,
-  }: {
-    title: string;
-    participant: string;
-    date: string;
-  }) => (
-    <div className="bg-project p-4 rounded-lg mb-3 transition-transform duration-300 ease-in-out hover:scale-[1.03] hover:shadow-sm cursor-pointer">
-      <div className="font-medium text-base mb-2">{title}</div>
-      <div className="text-sm text-gray-500">Date added: {date}</div>
-      <div className="text-sm text-gray-500">Participant: {participant}</div>
-    </div>
-  );
-
+const Task_Manager: React.FC = () => {
+  const { t } = useTranslation();
   return (
     <MainLayout>
       <div className="text-sm text-gray-500 mb-2">
         Dashboard &gt; <span>ToDoshnik</span>
       </div>
 
-      <h1 className="text-2xl font-medium mb-4">Project name</h1>
+      <h1 className="text-2xl font-medium mb-4">{t("project_title")}</h1>
 
       {/* Info boxes */}
       <div className="grid grid-cols-4 gap-4 mb-6">
         <div className="bg-card p-4 rounded-xl text-sm">
           <p>
-            <span className="font-medium">Date added:</span> 12/04/2021
+            <span className="font-medium">{t("added_date")}:</span> 12/04/2021
           </p>
           <p>
-            <span className="font-medium">Deadline:</span> 24/04/2021
+            <span className="font-medium">{t("deadline")}:</span> 24/04/2021
           </p>
           <p>
-            <span className="font-medium">Participants:</span> Adyl, Azhar,
-            Arthur
+            <span className="font-medium">{t("participants")}:</span> Adyl,
+            Azhar, Arthur
           </p>
         </div>
         <div className="bg-card p-4 rounded-xl col-span-2 text-sm">
@@ -47,13 +33,13 @@ const Task_Manager = () => {
         </div>
         <div className="bg-card p-4 rounded-xl text-sm">
           <p>
-            <span className="font-medium">All tasks:</span> 6
+            <span className="font-medium">{t("all_tasks")}:</span> 6
           </p>
           <p>
-            <span className="font-medium">Done:</span> 0
+            <span className="font-medium">{t("done")}:</span> 0
           </p>
           <p>
-            <span className="font-medium">Frozen:</span> 1
+            <span className="font-medium">{t("frozen")}:</span> 1
           </p>
         </div>
       </div>
@@ -63,9 +49,9 @@ const Task_Manager = () => {
         {/* To Do */}
         <div className="bg-card rounded-xl p-4 transition-transform duration-300 ease-in-out hover:scale-105 hover:shadow-lg cursor-pointer">
           <div className="flex justify-between items-center mb-4">
-            <h2 className="font-medium">To do</h2>
+            <h2 className="font-medium">{t("to_do")}</h2>
             <button className="text-btn-green text-xl font-medium cursor-pointer transition-colors duration-200 hover:text-btn-green/80">
-              +
+              <Link to={"/create_task"}>+</Link>
             </button>
           </div>
           <TaskCard
@@ -83,7 +69,7 @@ const Task_Manager = () => {
 
         {/* In progress */}
         <div className="bg-card rounded-xl p-4 transition-transform duration-300 ease-in-out hover:scale-105 hover:shadow-lg cursor-pointer">
-          <h2 className="font-medium mb-4">In progress</h2>
+          <h2 className="font-medium mb-4">{t("in_progress")}</h2>
           <TaskCard
             title="Notifications"
             date="12/04/2021"
@@ -94,12 +80,12 @@ const Task_Manager = () => {
 
         {/* Closed */}
         <div className="bg-card rounded-xl p-4 transition-transform duration-300 ease-in-out hover:scale-105 hover:shadow-lg cursor-pointer">
-          <h2 className="font-medium mb-4">Closed</h2>
+          <h2 className="font-medium mb-4">{t("done")}</h2>
         </div>
 
         {/* Frozen */}
         <div className="bg-card rounded-xl p-4 transition-transform duration-300 ease-in-out hover:scale-105 hover:shadow-lg cursor-pointer">
-          <h2 className="font-medium mb-4">Frozen</h2>
+          <h2 className="font-medium mb-4">{t("frozen")}</h2>
           <TaskCard
             title="Todoshnik design"
             date="12/04/2021"

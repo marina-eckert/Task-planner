@@ -1,5 +1,3 @@
-// TODO: Использовать эти интерфейсы в компонентах для улучшения типизации
-
 export interface Project {
   title: string;
   dateStart: string;
@@ -11,8 +9,8 @@ export interface Task {
   title: string;
   participant: string;
   date: string;
-  priority?: 'low' | 'medium' | 'high';
-  status?: 'todo' | 'in-progress' | 'closed' | 'frozen';
+  priority?: "low" | "medium" | "high";
+  status?: "todo" | "in-progress" | "closed" | "frozen";
 }
 
 export interface User {
@@ -32,4 +30,4 @@ export interface HistoryItem {
   activity: string;
   description: string;
   user: string;
-} 
+}

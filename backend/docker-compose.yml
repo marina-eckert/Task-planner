@@ -1,4 +1,4 @@
-version: "3.8"
+version: '3.8'
 
 services:
   # MySQL база данных
@@ -45,4 +45,4 @@ volumes:
 
 networks:
   tasktracker-network:
-    driver: bridge
+    driver: bridge 

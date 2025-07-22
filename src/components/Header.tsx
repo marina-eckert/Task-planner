@@ -1,13 +1,19 @@
 import { Bell, Mail, ChevronDown, Search } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 const Header = () => {
+  const { t, i18n } = useTranslation();
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   const toggleDropdown = () => {
     setDropdownOpen((prev) => !prev);
+  };
+
+  const changeLanguage = (lng: string) => {
+    i18n.changeLanguage(lng);
   };
 
   useEffect(() => {
@@ -30,13 +36,26 @@ const Header = () => {
         <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-black cursor-pointer" />
         <input
           type="text"
-          placeholder="Search"
+          placeholder={t("search")}
           className="w-full pl-10 pr-4 py-2 text-sm text-search border rounded-3xl border-border focus:outline-none"
         />
       </div>
 
       {/* Right Icons */}
       <div className="flex items-center gap-6">
+        {/* Language switch */}
+        <div>
+          <select
+            onChange={(e) => changeLanguage(e.target.value)}
+            className="border border-gray-300 rounded px-2 py-1 text-sm"
+            defaultValue={i18n.language}
+          >
+            <option value="ru">RU</option>
+            <option value="en">EN</option>
+            <option value="de">DE</option>
+          </select>
+        </div>
+
         <Bell className="text-black cursor-pointer" />
         <Mail className="text-black cursor-pointer" />
 
@@ -60,19 +79,19 @@ const Header = () => {
                 to="/profile"
                 className="block px-4 py-4 text-sm text-black hover:bg-gray-100 transition-colors duration-300 ease-in-out"
               >
-                Profile
+                {t("profile")}
               </Link>
               <Link
                 to="/settings"
                 className="block px-4 py-4 text-sm text-black hover:bg-gray-100 transition-colors duration-300 ease-in-out"
               >
-                Account Settings
+                {t("account_settings")}
               </Link>
               <Link
                 to="/"
                 className="block px-4 py-4 text-sm text-red-600 hover:bg-gray-100 transition-colors duration-300 ease-in-out"
               >
-                Logout
+                {t("logout")}
               </Link>
             </div>
           )}

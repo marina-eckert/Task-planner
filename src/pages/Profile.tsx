@@ -1,8 +1,10 @@
 import MainLayout from "../layouts/MainLayout";
 import avatar from "../assets/images/arthur.svg";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 const Profile = () => {
+  const { t } = useTranslation();
   const user = {
     name: "Azhar I.",
     email: "azhar@example.com",
@@ -11,7 +13,7 @@ const Profile = () => {
   return (
     <MainLayout>
       <div className="max-w-md mx-auto text-center mt-10">
-        <h2 className="text-3xl font-medium mb-6">Profile</h2>
+        <h2 className="text-3xl font-medium mb-6">{t("profile")}</h2>
         <img
           src={avatar}
           alt="Avatar"
@@ -20,7 +22,7 @@ const Profile = () => {
         <h3 className="text-xl font-semibold">{user.name}</h3>
         <p className="text-gray-600">{user.email}</p>
         <button className="mt-6 cursor-pointer bg-orange-500 hover:bg-orange-600 text-white px-6 py-2 rounded-lg font-medium transition">
-          <Link to="/settings">Edit Profile</Link>
+          <Link to="/settings">{t("edit_profile")}</Link>
         </button>
       </div>
     </MainLayout>

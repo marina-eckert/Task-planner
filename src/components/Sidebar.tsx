@@ -1,8 +1,9 @@
 import { NavLink } from "react-router-dom";
 import logo from "../assets/images/icon.svg";
+import { useTranslation } from "react-i18next";
 
-// TODO: Добавить типизацию компонента - const Sidebar: React.FC = () => {
-const Sidebar = () => {
+const Sidebar: React.FC = () => {
+  const { t } = useTranslation();
   return (
     <aside className="w-[20%] bg-sidebar min-h-screen flex flex-col font-rubik font-medium text-black">
       <div className="mr-auto ml-auto p-16">
@@ -21,7 +22,7 @@ const Sidebar = () => {
           {({ isActive }) => (
             <>
               {isActive && <span className="text-lg">—</span>}
-              <span>Clients</span>
+              <span>{t("clients")}</span>
             </>
           )}
         </NavLink>
@@ -36,7 +37,7 @@ const Sidebar = () => {
           {({ isActive }) => (
             <>
               {isActive && <span className="text-lg">—</span>}
-              <span>Task manager</span>
+              <span>{t("task_manager")}</span>
             </>
           )}
         </NavLink>
@@ -51,7 +52,7 @@ const Sidebar = () => {
           {({ isActive }) => (
             <>
               {isActive && <span className="text-lg">—</span>}
-              <span>Tasks</span>
+              <span>{t("tasks")}</span>
             </>
           )}
         </NavLink>
@@ -66,7 +67,7 @@ const Sidebar = () => {
           {({ isActive }) => (
             <>
               {isActive && <span className="text-lg">—</span>}
-              <span>Contacts</span>
+              <span>{t("contacts")}</span>
             </>
           )}
         </NavLink>

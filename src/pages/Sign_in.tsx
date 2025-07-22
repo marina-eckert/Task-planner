@@ -3,6 +3,8 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Link, useNavigate } from "react-router-dom";
 import AuthLayout from "../layouts/AuthLayout";
+import type { LoginResponse } from "../types/index";
+import { useTranslation } from "react-i18next";
 
 const schema = z.object({
   email: z.string().email({ message: "Введите корректный email" }),
@@ -14,7 +16,11 @@ const schema = z.object({
 
 type FormData = z.infer<typeof schema>;
 
-function Sign_in() {
+const Sign_in: React.FC = () => {
+  const { t, i18n } = useTranslation();
+  const changeLanguage = (lng: string) => {
+    i18n.changeLanguage(lng);
+  };
   const {
     register,
     handleSubmit,
@@ -34,13 +40,7 @@ function Sign_in() {
         }),
       });
 
-      // TODO: Добавить типизацию для API ответов
-      // interface LoginResponse {
-      //   token: string;
-      //   userId: string;
-      //   message?: string;
-      // }
-      const result = await response.json();
+      const result: LoginResponse = await response.json();
 
       if (!response.ok) {
         throw new Error(result.message || "Ошибка входа");
@@ -62,9 +62,25 @@ function Sign_in() {
         className="font-rubik font-normal bg-white p-7 rounded-2xl shadow-lg w-full max-w-md space-y-3"
         onSubmit={handleSubmit(submitData)}
       >
-        <h2 className="text-2xl font-bold mb-4 text-center">Вход</h2>
+        <div className="flex justify-between items-center w-full px-4">
+          <div className="flex-1 flex justify-center">
+            <h2 className="text-2xl font-medium ml-12">{t("sign_in")}</h2>
+          </div>
 
-        <label className="block text-black font-medium">Email:</label>
+          <div>
+            <select
+              onChange={(e) => changeLanguage(e.target.value)}
+              className="border border-fusion rounded px-2 py-1 text-sm"
+              defaultValue={i18n.language}
+            >
+              <option value="ru">RU</option>
+              <option value="en">EN</option>
+              <option value="de">DE</option>
+            </select>
+          </div>
+        </div>
+
+        <label className="block text-black font-medium">{t("email")}:</label>
         <input
           type="text"
           {...register("email")}
@@ -72,7 +88,7 @@ function Sign_in() {
         />
         <p className="text-fusion text-sm">{errors.email?.message}</p>
 
-        <label className="block text-black font-medium">Пароль:</label>
+        <label className="block text-black font-medium">{t("password")}:</label>
         <input
           type="password"
           {...register("password")}
@@ -84,18 +100,18 @@ function Sign_in() {
           className="w-full bg-fusion mt-1 text-white py-2 rounded-md hover:bg-fusion-dark transition cursor-pointer"
           type="submit"
         >
-          Войти
+          {t("sign_in")}
         </button>
 
         <p className="text-center">
-          Нет аккаунта?{" "}
+          {t("no_account")}{" "}
           <Link to="/sign_up" className="text-fusion hover:text-fusion-dark">
-            Зарегистрироваться
+            {t("sign_up")}
           </Link>
         </p>
       </form>
     </AuthLayout>
   );
-}
+};
 
 export default Sign_in;

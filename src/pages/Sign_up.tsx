@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Link, useNavigate } from "react-router-dom";
 import AuthLayout from "../layouts/AuthLayout";
+import { useTranslation } from "react-i18next";
 
 const schema = z
   .object({
@@ -28,6 +29,10 @@ const schema = z
 type FormData = z.infer<typeof schema>;
 
 function Sign_up() {
+  const { t, i18n } = useTranslation();
+  const changeLanguage = (lng: string) => {
+    i18n.changeLanguage(lng);
+  };
   const {
     register,
     handleSubmit,
@@ -70,10 +75,26 @@ function Sign_up() {
         onSubmit={handleSubmit(submitData)}
         className="font-rubik font-normal bg-white p-8 rounded-2xl shadow-lg w-full max-w-md space-y-4"
       >
-        <h2 className="text-2xl font-bold mb-4 text-center">Регистрация</h2>
+        <div className="flex justify-between items-center w-full px-4">
+          <div className="flex-1 flex justify-center">
+            <h2 className="text-2xl font-medium ml-12">{t("sign_up")}</h2>
+          </div>
+
+          <div>
+            <select
+              onChange={(e) => changeLanguage(e.target.value)}
+              className="border border-fusion rounded ml-2 px-2 py-1 text-sm"
+              defaultValue={i18n.language}
+            >
+              <option value="ru">RU</option>
+              <option value="en">EN</option>
+              <option value="de">DE</option>
+            </select>
+          </div>
+        </div>
 
         <div>
-          <label className="block text-black font-medium">Логин</label>
+          <label className="block text-black font-medium">{t("login")}</label>
           <input
             type="text"
             {...register("login")}
@@ -85,7 +106,7 @@ function Sign_up() {
         </div>
 
         <div>
-          <label className="block text-black font-medium">Email</label>
+          <label className="block text-black font-medium">{t("email")}</label>
           <input
             type="email"
             {...register("email")}
@@ -97,7 +118,9 @@ function Sign_up() {
         </div>
 
         <div>
-          <label className="block text-black font-medium">Пароль</label>
+          <label className="block text-black font-medium">
+            {t("password")}
+          </label>
           <input
             type="password"
             {...register("password")}
@@ -112,7 +135,7 @@ function Sign_up() {
 
         <div>
           <label className="block text-black font-medium">
-            Подтвердить пароль
+            {t("confirm_password")}
           </label>
           <input
             type="password"
@@ -130,13 +153,13 @@ function Sign_up() {
           type="submit"
           className="w-full mt-1 bg-fusion text-white cursor-pointer py-2 rounded-md hover:bg-fusion-dark transition"
         >
-          Зарегистрироваться
+          {t("sign_up")}
         </button>
 
         <p className="text-center">
-          Уже есть аккаунт?{" "}
+          {t("already_have_account")}{" "}
           <Link to="/" className="text-fusion hover:text-fusion-dark">
-            Войти
+            {t("sign_in")}
           </Link>
         </p>
       </form>

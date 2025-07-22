@@ -2,8 +2,10 @@ import { useState } from "react";
 import type { ChangeEvent, FormEvent } from "react";
 import MainLayout from "../layouts/MainLayout";
 import avatar from "../assets/images/arthur.svg";
+import { useTranslation } from "react-i18next";
 
 const AccountSettings = () => {
+  const { t } = useTranslation();
   const [login, setLogin] = useState("Azhar I.");
   const [email, setEmail] = useState("azhar@example.com");
   const [password, setPassword] = useState("");
@@ -40,7 +42,7 @@ const AccountSettings = () => {
     <MainLayout>
       <div className="max-w-lg mx-auto mt-10 p-6 bg-white">
         <h2 className="text-3xl font-semibold mb-6 text-center">
-          Account Settings
+          {t("account_settings")}
         </h2>
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="flex flex-col items-center">
@@ -50,7 +52,7 @@ const AccountSettings = () => {
               className="w-24 h-24 rounded-full mb-4 object-cover"
             />
             <label className="cursor-pointer text-orange-500 hover:underline">
-              Change Profile Picture
+              {t("change_profile_picture")}
               <input
                 type="file"
                 accept="image/*"
@@ -62,7 +64,7 @@ const AccountSettings = () => {
 
           <div>
             <label className="block font-medium mb-1" htmlFor="login">
-              Login
+              {t("login")}
             </label>
             <input
               id="login"
@@ -75,7 +77,7 @@ const AccountSettings = () => {
 
           <div>
             <label className="block font-medium mb-1" htmlFor="email">
-              Email
+              {t("email")}
             </label>
             <input
               id="email"
@@ -88,12 +90,11 @@ const AccountSettings = () => {
 
           <div>
             <label className="block font-medium mb-1" htmlFor="password">
-              New Password
+              {t("new_password")}
             </label>
             <input
               id="password"
               type="password"
-              placeholder="Leave empty to keep current password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               className="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-orange-400"
@@ -102,12 +103,11 @@ const AccountSettings = () => {
 
           <div>
             <label className="block font-medium mb-1" htmlFor="confirmPassword">
-              Confirm New Password
+              {t("confirm_password")}
             </label>
             <input
               id="confirmPassword"
               type="password"
-              placeholder="Confirm new password"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
               className="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-orange-400"
@@ -118,7 +118,7 @@ const AccountSettings = () => {
             type="submit"
             className="w-full bg-orange-500 text-white py-2 rounded-md hover:bg-orange-600 transition"
           >
-            Save Changes
+            {t("save_changes")}
           </button>
         </form>
       </div>

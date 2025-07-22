@@ -9,6 +9,9 @@ import Profile from "../pages/Profile";
 import Sidebar from "../components/Sidebar";
 import Header from "../components/Header";
 import AccountSettings from "../pages/AccountSettings";
+import CreateProject from "../pages/CreateProject";
+import ProjectDetails from "../pages/ProjectDetails";
+import CreateTask from "../pages/CreateTask";
 
 const AppRoutes = () => {
   return (
@@ -22,6 +25,9 @@ const AppRoutes = () => {
       <Route path="/header" element={<Header />} />
       <Route path="/profile" element={<Profile />} />
       <Route path="/settings" element={<AccountSettings />} />
+      <Route path="/create_project" element={<CreateProject />} />
+      <Route path="/project/:id" element={<ProjectDetails />} />
+      <Route path="/create_task" element={<CreateTask />} />
     </Routes>
   );
 };
