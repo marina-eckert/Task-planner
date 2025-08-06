@@ -1,6 +1,6 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const auth = require('../middlewares/auth');
+const auth = require("../middlewares/auth");
 const {
   getAllTasks,
   createTask,
@@ -8,19 +8,23 @@ const {
   deleteTask,
   getTaskHistory,
   getTaskFiles,
-  uploadTaskFile
-} = require('../controllers/tasks');
-const multer = require('multer');
-const path = require('path');
+  uploadTaskFile,
+  searchTasks,
+  getTaskById,
+  logTaskTime,
+  getUserTimeSummary,
+} = require("../controllers/tasks");
+const multer = require("multer");
+const path = require("path");
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, path.join(__dirname, '../uploads'));
+    cb(null, path.join(__dirname, "../uploads"));
   },
   filename: function (req, file, cb) {
-    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-    cb(null, uniqueSuffix + '-' + file.originalname);
-  }
+    const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
+    cb(null, uniqueSuffix + "-" + file.originalname);
+  },
 });
 const upload = multer({ storage });
 
@@ -71,7 +75,7 @@ const upload = multer({ storage });
  *       200:
  *         description: Список задач
  */
-router.get('/', auth, getAllTasks);
+router.get("/", auth, getAllTasks);
 
 /**
  * @swagger
@@ -109,7 +113,7 @@ router.get('/', auth, getAllTasks);
  *       201:
  *         description: Задача создана
  */
-router.post('/', auth, createTask);
+router.post("/", auth, createTask);
 
 /**
  * @swagger
@@ -154,7 +158,7 @@ router.post('/', auth, createTask);
  *       404:
  *         description: Задача не найдена или нет доступа
  */
-router.put('/:id', auth, updateTask);
+router.put("/:id", auth, updateTask);
 
 /**
  * @swagger
@@ -177,7 +181,7 @@ router.put('/:id', auth, updateTask);
  *       404:
  *         description: Задача не найдена или нет доступа
  */
-router.delete('/:id', auth, deleteTask);
+router.delete("/:id", auth, deleteTask);
 
 /**
  * @swagger
@@ -198,7 +202,7 @@ router.delete('/:id', auth, deleteTask);
  *       200:
  *         description: История изменений задачи
  */
-router.get('/:id/history', auth, getTaskHistory);
+router.get("/:id/history", auth, getTaskHistory);
 
 /**
  * @swagger
@@ -219,7 +223,7 @@ router.get('/:id/history', auth, getTaskHistory);
  *       200:
  *         description: Список файлов задачи
  */
-router.get('/:taskId/files', auth, getTaskFiles);
+router.get("/:taskId/files", auth, getTaskFiles);
 
 /**
  * @swagger
@@ -247,6 +251,55 @@ router.get('/:taskId/files', auth, getTaskFiles);
  *       201:
  *         description: Файл загружен
  */
-router.post('/:taskId/files', auth, upload.single('file'), uploadTaskFile);
+router.post("/:taskId/files", auth, upload.single("file"), uploadTaskFile);
+
+/**
+ * @swagger
+ * /api/tasks/search:
+ *   get:
+ *     summary: Поиск задач по тексту (title, description)
+ *     tags: [Tasks]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: query
+ *         name: q
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: Поисковый запрос
+ *     responses:
+ *       200:
+ *         description: Список найденных задач
+ */
+router.get("/search", auth, searchTasks);
+
+/**
+ * @swagger
+ * /api/tasks/{id}:
+ *   get:
+ *     summary: Получить задачу по ID
+ *     tags: [Tasks]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: integer
+ *         required: true
+ *         description: ID задачи
+ *     responses:
+ *       200:
+ *         description: Данные задачи
+ *       404:
+ *         description: Задача не найдена или нет доступа
+ */
+router.get("/:id", auth, getTaskById);
+
+// Логирование времени по задаче
+router.post("/log-time", auth, logTaskTime);
+// Сводка по пользователю за месяц
+router.get("/user-time-summary", auth, getUserTimeSummary);
 
 module.exports = router;

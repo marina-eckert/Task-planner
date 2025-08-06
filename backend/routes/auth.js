@@ -1,6 +1,11 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const { register, login, requestPasswordReset, resetPassword } = require('../controllers/auth');
+const {
+  register,
+  login,
+  requestPasswordReset,
+  resetPassword,
+} = require("../controllers/auth");
 
 /**
  * @swagger
@@ -38,7 +43,7 @@ const { register, login, requestPasswordReset, resetPassword } = require('../con
  *       400:
  *         description: Пользователь уже существует
  */
-router.post('/register', register);
+router.post("/register", register);
 
 /**
  * @swagger
@@ -66,7 +71,7 @@ router.post('/register', register);
  *       401:
  *         description: Неверные учетные данные
  */
-router.post('/login', login);
+router.post("/login", login);
 
 /**
  * @swagger
@@ -89,7 +94,7 @@ router.post('/login', login);
  *       200:
  *         description: Токен для сброса пароля сгенерирован
  */
-router.post('/reset-request', requestPasswordReset);
+router.post("/reset-request", requestPasswordReset);
 
 /**
  * @swagger
@@ -115,6 +120,6 @@ router.post('/reset-request', requestPasswordReset);
  *       200:
  *         description: Пароль успешно сброшен
  */
-router.post('/reset-password', resetPassword);
+router.post("/reset-password", resetPassword);
 
 module.exports = router;

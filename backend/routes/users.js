@@ -1,7 +1,8 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const { auth, requireRole } = require('../middlewares/auth');
-const pool = require('../config/db');
+const auth = require("../middlewares/auth");
+const requireRole = require("../middlewares/auth").requireRole;
+const pool = require("../config/db");
 
 /**
  * @swagger
@@ -22,8 +23,8 @@ const pool = require('../config/db');
  *       200:
  *         description: Профиль пользователя
  */
-router.get('/profile', auth, (req, res) => {
-  res.json({ message: 'User profile endpoint' });
+router.get("/profile", auth, (req, res) => {
+  res.json({ message: "User profile endpoint" });
 });
 
 /**
@@ -38,27 +39,33 @@ router.get('/profile', auth, (req, res) => {
  *       200:
  *         description: Список пользователей
  */
-router.get('/', auth, requireRole('admin', 'manager'), async (req, res) => {
+router.get("/", auth, requireRole("admin", "manager"), async (req, res) => {
   try {
-    const [users] = await pool.query('SELECT id, username, email, role, created_at FROM users');
+    const [users] = await pool.query(
+      "SELECT id, username, email, role, created_at FROM users",
+    );
     res.json(users);
   } catch (error) {
-    res.status(500).json({ message: 'Error fetching users', error: error.message });
+    res
+      .status(500)
+      .json({ message: "Error fetching users", error: error.message });
   }
 });
 
 // Сменить роль пользователя (только admin)
-router.patch('/:id/role', auth, requireRole('admin'), async (req, res) => {
+router.patch("/:id/role", auth, requireRole("admin"), async (req, res) => {
   try {
     const { id } = req.params;
     const { role } = req.body;
-    if (!['admin', 'user', 'manager'].includes(role)) {
-      return res.status(400).json({ message: 'Invalid role' });
+    if (!["admin", "user", "manager"].includes(role)) {
+      return res.status(400).json({ message: "Invalid role" });
     }
-    await pool.query('UPDATE users SET role = ? WHERE id = ?', [role, id]);
-    res.json({ message: 'Role updated successfully' });
+    await pool.query("UPDATE users SET role = ? WHERE id = ?", [role, id]);
+    res.json({ message: "Role updated successfully" });
   } catch (error) {
-    res.status(500).json({ message: 'Error updating role', error: error.message });
+    res
+      .status(500)
+      .json({ message: "Error updating role", error: error.message });
   }
 });
 

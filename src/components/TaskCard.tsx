@@ -1,20 +1,43 @@
 import React from "react";
-import type { Task } from "../types/index";
-import { useTranslation } from "react-i18next";
 
-type Props = Pick<Task, "title" | "participant" | "date">;
+interface TaskCardProps {
+  title: string;
+  date: string | null;
+  participant: string;
+}
 
-const TaskCard: React.FC<Props> = ({ title, participant, date }) => {
-  const { t } = useTranslation();
+const TaskCard: React.FC<TaskCardProps> = ({ title, date, participant }) => {
+  const formatDate = (dateString: string | null) => {
+    if (!dateString) return "No deadline";
+    return new Date(dateString).toLocaleDateString();
+  };
+
+  const handleClick = (e: React.MouseEvent) => {
+    if (e.defaultPrevented) {
+      return;
+    }
+  };
+
+  const handleMouseDown = (e: React.MouseEvent) => {
+    e.stopPropagation();
+  };
 
   return (
-    <div className="bg-project p-4 rounded-lg mb-3 transition-transform duration-300 ease-in-out hover:scale-[1.03] hover:shadow-sm cursor-pointer">
-      <div className="font-medium text-base mb-2">{title}</div>
-      <div className="text-sm text-gray-500">
-        {t("added_date")}: {date}
-      </div>
-      <div className="text-sm text-gray-500">
-        {t("participants")}: {participant}
+    <div
+      className="bg-project border border-gray-200 rounded-lg p-3 mb-3 hover:shadow-md transition-shadow cursor-pointer select-none"
+      onClick={handleClick}
+      onMouseDown={handleMouseDown}
+    >
+      <h3 className="font-medium text-sm mb-2 line-clamp-2 pointer-events-none">
+        {title}
+      </h3>
+      <div className="text-xs text-gray-500 space-y-1 pointer-events-none">
+        <p>
+          <span className="font-medium">Due:</span> {formatDate(date)}
+        </p>
+        <p>
+          <span className="font-medium">Assigned:</span> {participant}
+        </p>
       </div>
     </div>
   );

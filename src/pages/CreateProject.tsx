@@ -27,11 +27,16 @@ const CreateProject: React.FC = () => {
         description: fullDescription,
       };
 
-      await axios.post("http://localhost:5000/api/projects", newProject, {
-        headers: {
-          Authorization: `Bearer ${token}`,
+      //await axios.post("http://localhost:5000/api/projects", newProject, {
+      await axios.post(
+        `${import.meta.env.VITE_API_BASE_URL}/projects`,
+        newProject,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         },
-      });
+      );
 
       navigate("/dashboard");
     } catch (err) {

@@ -4,6 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Link, useNavigate } from "react-router-dom";
 import AuthLayout from "../layouts/AuthLayout";
 import { useTranslation } from "react-i18next";
+import { useState } from "react";
 
 const schema = z
   .object({
@@ -20,6 +21,9 @@ const schema = z
       .string()
       .min(5, { message: "Пароль слишком короткий" })
       .max(20, { message: "Пароль слишком длинный" }),
+    role: z.enum(["admin", "user", "manager"], {
+      errorMap: () => ({ message: "Выберите роль" }),
+    }),
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: "Пароли не совпадают",
@@ -30,28 +34,39 @@ type FormData = z.infer<typeof schema>;
 
 function Sign_up() {
   const { t, i18n } = useTranslation();
-  const changeLanguage = (lng: string) => {
-    i18n.changeLanguage(lng);
-  };
+  const changeLanguage = (lng: string) => i18n.changeLanguage(lng);
+
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<FormData>({ resolver: zodResolver(schema) });
+  } = useForm<FormData>({
+    resolver: zodResolver(schema),
+    defaultValues: {
+      role: "user",
+    },
+  });
 
   const navigate = useNavigate();
+  const [errorMessage, setErrorMessage] = useState("");
 
   const submitData = async (data: FormData) => {
+    setErrorMessage("");
     try {
-      const response = await fetch("http://localhost:5000/api/auth/register", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          username: data.login,
-          email: data.email,
-          password: data.password,
-        }),
-      });
+      //const response = await fetch("http://localhost:5000/api/auth/register", {
+      const response = await fetch(
+        `${import.meta.env.VITE_API_BASE_URL}/auth/register`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            username: data.login,
+            email: data.email,
+            password: data.password,
+            role: data.role,
+          }),
+        },
+      );
 
       const result = await response.json();
 
@@ -61,11 +76,14 @@ function Sign_up() {
 
       localStorage.setItem("token", result.token);
       localStorage.setItem("userId", result.userId);
+      localStorage.setItem("userRole", result.role);
+      localStorage.setItem("username", data.login);
+      localStorage.setItem("email", data.email);
 
       console.log("✅ Успешная регистрация", result);
       navigate("/");
     } catch (err: any) {
-      alert(`Ошибка: ${err.message}`);
+      setErrorMessage(err.message || "Ошибка подключения к серверу");
     }
   };
 
@@ -149,12 +167,35 @@ function Sign_up() {
           )}
         </div>
 
+        <div>
+          <label className="block text-black font-medium">
+            {t("role") || "Роль"}
+          </label>
+          <select
+            {...register("role")}
+            className="w-full mt-2 p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+          >
+            <option value="user">{t("user") || "Пользователь"}</option>
+            <option value="manager">{t("manager") || "Менеджер"}</option>
+            <option value="admin">{t("admin") || "Администратор"}</option>
+          </select>
+          {errors.role && (
+            <p className="text-red-500 text-sm mt-2">{errors.role.message}</p>
+          )}
+        </div>
+
         <button
           type="submit"
           className="w-full mt-1 bg-fusion text-white cursor-pointer py-2 rounded-md hover:bg-fusion-dark transition"
         >
           {t("sign_up")}
         </button>
+
+        {errorMessage && (
+          <p className="text-red-500 text-center text-sm mt-2">
+            {errorMessage}
+          </p>
+        )}
 
         <p className="text-center">
           {t("already_have_account")}{" "}

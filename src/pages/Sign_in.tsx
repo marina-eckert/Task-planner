@@ -5,6 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import AuthLayout from "../layouts/AuthLayout";
 import type { LoginResponse } from "../types/index";
 import { useTranslation } from "react-i18next";
+import { useState } from "react";
 
 const schema = z.object({
   email: z.string().email({ message: "Введите корректный email" }),
@@ -21,6 +22,7 @@ const Sign_in: React.FC = () => {
   const changeLanguage = (lng: string) => {
     i18n.changeLanguage(lng);
   };
+
   const {
     register,
     handleSubmit,
@@ -28,17 +30,23 @@ const Sign_in: React.FC = () => {
   } = useForm<FormData>({ resolver: zodResolver(schema) });
 
   const navigate = useNavigate();
+  const [errorMessage, setErrorMessage] = useState("");
 
   const submitData = async (data: FormData) => {
+    setErrorMessage("");
     try {
-      const response = await fetch("http://localhost:5000/api/auth/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          email: data.email,
-          password: data.password,
-        }),
-      });
+      //const response = await fetch("http://localhost:5000/api/auth/login", {
+      const response = await fetch(
+        `${import.meta.env.VITE_API_BASE_URL}/auth/login`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            email: data.email,
+            password: data.password,
+          }),
+        },
+      );
 
       const result: LoginResponse = await response.json();
 
@@ -48,11 +56,40 @@ const Sign_in: React.FC = () => {
 
       localStorage.setItem("token", result.token);
       localStorage.setItem("userId", result.userId);
+      localStorage.setItem("userRole", result.role);
+      localStorage.setItem("email", data.email);
+
+      try {
+        const profileResponse = await fetch(
+          `${import.meta.env.VITE_API_BASE_URL}/users/profile`,
+          {
+            headers: {
+              Authorization: `Bearer ${result.token}`,
+            },
+          },
+        );
+
+        if (profileResponse.ok) {
+          const profileData = await profileResponse.json();
+          if (profileData.username) {
+            localStorage.setItem("username", profileData.username);
+          }
+          if (profileData.email) {
+            localStorage.setItem("email", profileData.email);
+          }
+        } else {
+          const emailUsername = data.email.split("@")[0];
+          localStorage.setItem("username", emailUsername);
+        }
+      } catch (profileError) {
+        const emailUsername = data.email.split("@")[0];
+        localStorage.setItem("username", emailUsername);
+      }
 
       console.log("✅ Вход выполнен", result);
       navigate("/dashboard");
     } catch (err: any) {
-      alert(`Ошибка: ${err.message}`);
+      setErrorMessage(err.message || "Ошибка подключения к серверу");
     }
   };
 
@@ -102,6 +139,12 @@ const Sign_in: React.FC = () => {
         >
           {t("sign_in")}
         </button>
+
+        {errorMessage && (
+          <p className="text-red-500 text-center text-sm mt-2">
+            {errorMessage}
+          </p>
+        )}
 
         <p className="text-center">
           {t("no_account")}{" "}
